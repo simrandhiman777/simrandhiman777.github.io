@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Kawaii Bear</title>
+  <style>
+    body {
+      background-color: #fffaf0;
+      color: #3e2723;
+      font-family: 'Arial Rounded MT Bold', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 60px;
+      overflow: hidden;
+      animation: fadeIn 2s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      font-size: 2.5em;
+    }
+
+    .bear {
+      width: 180px;
+      margin-top: 20px;
+    }
+
+    .heart {
+      position: absolute;
+      bottom: -20px;
+      width: 20px;
+      height: 20px;
+      background: pink;
+      clip-path: polygon(50% 0%, 100% 35%, 80% 100%, 50% 75%, 20% 100%, 0 35%);
+      animation: floatUp 5s infinite ease-in;
+      opacity: 0.7;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-800px) scale(1.5); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Hi, I'm cupcake! 🐻</h1>
+  <p>Cozy up with hugs and heartbeats!</p>
+  <img class="bear" src="https://cdn.pixabay.com/photo/2016/04/01/09/11/teddy-bear-1292649_1280.png" alt="Cute Bear">
+
+  <!-- Floating hearts -->
+  <script>
+    for (let i = 0; i < 20; i++) {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = 4 + Math.random() * 3 + 's';
+      document.body.appendChild(heart);
+    }
+  </script>
+</body>
+</html>
