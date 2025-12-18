@@ -1,527 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Ocean Portfolio</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js "></script>
-    <script src="https://cdn.jsdelivr.net/npm/tweakpane@4.0.5/dist/tweakpane.min.js "></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            overflow-x: hidden;
-            color: white;
-            background: linear-gradient(to bottom, #0a0a15, #1a0a20);
-            min-height: 100vh;
-            position: relative;
-        }
-        
-        #canvas-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-        
-        .content-wrapper {
-            position: relative;
-            z-index: 10;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-        
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem 0;
-            position: sticky;
-            top: 0;
-            backdrop-filter: blur(10px);
-            background: rgba(10, 10, 21, 0.7);
-            z-index: 100;
-        }
-        
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: linear-gradient(45deg, #ffaa00, #8888aa);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-        
-        nav a {
-            color: #e0e0ff;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
-            padding-bottom: 0.3rem;
-        }
-        
-        nav a:hover {
-            color: #ffaa00;
-        }
-        
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: #ffaa00;
-            transition: width 0.3s ease;
-        }
-        
-        nav a:hover::after {
-            width: 100%;
-        }
-        
-        .hero {
-            min-height: 80vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 2rem;
-            position: relative;
-        }
-        
-        .hero h1 {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            text-shadow: 0 0 15px rgba(255, 170, 0, 0.5);
-            background: linear-gradient(45deg, #ffaa00, #8888aa);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
-        .hero p {
-            font-size: 1.5rem;
-            max-width: 700px;
-            margin: 1.5rem auto;
-            color: #e0e0ff;
-            line-height: 1.6;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 0.8rem 2rem;
-            background: linear-gradient(45deg, #ffaa00, #ff3300);
-            color: white;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            margin-top: 1.5rem;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(255, 170, 0, 0.3);
-        }
-        
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 170, 0, 0.5);
-        }
-        
-        section {
-            padding: 5rem 0;
-            position: relative;
-        }
-        
-        .section-title {
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            text-align: center;
-            position: relative;
-            display: inline-block;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(45deg, #ffaa00, #8888aa);
-            border-radius: 2px;
-        }
-        
-        .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        
-        .project-card {
-            background: rgba(20, 20, 40, 0.7);
-            border-radius: 10px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .project-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            border-color: rgba(255, 170, 0, 0.3);
-        }
-        
-        .project-img {
-            height: 200px;
-            background: linear-gradient(45deg, #1a0a20, #0a0a15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-        }
-        
-        .project-info {
-            padding: 1.5rem;
-        }
-        
-        .project-info h3 {
-            font-size: 1.4rem;
-            margin-bottom: 0.8rem;
-            color: #ffaa00;
-        }
-        
-        .project-info p {
-            color: #c0c0e0;
-            line-height: 1.6;
-        }
-        
-        .about-content {
-            display: flex;
-            gap: 3rem;
-            align-items: center;
-        }
-        
-        .about-text {
-            flex: 1;
-        }
-        
-        .about-text h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            color: #ffaa00;
-        }
-        
-        .about-text p {
-            margin-bottom: 1.2rem;
-            line-height: 1.7;
-            color: #e0e0ff;
-        }
-        
-        .skills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-        
-        .skill-tag {
-            background: rgba(255, 170, 0, 0.15);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-        }
-        
-        .contact-form {
-            max-width: 600px;
-            margin: 0 auto;
-            background: rgba(20, 20, 40, 0.7);
-            padding: 2.5rem;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #e0e0ff;
-        }
-        
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            background: rgba(10, 10, 21, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-            color: white;
-            font-size: 1rem;
-        }
-        
-        .form-group textarea {
-            min-height: 150px;
-            resize: vertical;
-        }
-        
-        footer {
-            text-align: center;
-            padding: 2rem;
-            color: #a0a0c0;
-            font-size: 0.9rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            margin-top: 2rem;
-        }
-        
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin: 1.5rem 0;
-        }
-        
-        .social-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-        
-        .social-icon:hover {
-            background: #ffaa00;
-            transform: translateY(-5px);
-        }
-        
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            
-            .about-content {
-                flex-direction: column;
-            }
-            
-            nav ul {
-                gap: 1rem;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cute Message Page</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+      transition: background-color 0.3s ease;
+    }
+
+    .page {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      padding: 30px;
+    }
+
+    #home:target ~ .home-page,
+    body:not(:target) .home-page {
+      display: flex;
+      background-color: #ffe4e1;
+    }
+
+    #message:target ~ .message-page {
+      display: flex;
+      background-color: #fce4ec;
+    }
+
+    h1 {
+      color: #ff69b4;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: #555;
+    }
+
+    .cute-button {
+      display: inline-block;
+      background-color: #ffb6c1;
+      color: white;
+      padding: 12px 25px;
+      font-size: 1rem;
+      border-radius: 30px;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+      margin-top: 20px;
+    }
+
+    .cute-button:hover {
+      background-color: #ff69b4;
+    }
+  </style>
 </head>
 <body>
-    <div id="canvas-container"></div>
-    
-    <div class="content-wrapper">
-        <header>
-            <div class="logo">OceanDev</div>
-            <nav>
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#projects">Projects</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
-        </header>
-        
-        <section id="home" class="hero">
-            <h1>Creative Developer</h1>
-            <p>Specializing in immersive web experiences with WebGL, Three.js, and creative coding. Transforming ideas into interactive realities.</p>
-            <a href="#projects" class="btn">View My Work</a>
-        </section>
-        
-        <section id="projects">
-            <h2 class="section-title">Featured Projects</h2>
-            <div class="portfolio-grid">
-                <div class="project-card">
-                    <div class="project-img">🌊</div>
-                    <div class="project-info">
-                        <h3>Ocean Simulation</h3>
-                        <p>Procedural ocean with realistic waves, reflections, and atmospheric effects using custom GLSL shaders.</p>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-img">🌌</div>
-                    <div class="project-info">
-                        <h3>Nebula Explorer</h3>
-                        <p>Interactive 3D visualization of cosmic phenomena with particle systems and volumetric lighting.</p>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-img">🏙️</div>
-                    <div class="project-info">
-                        <h3>City Generator</h3>
-                        <p>Procedurally generated urban environments with real-time lighting and shadow mapping.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <section id="about">
-            <h2 class="section-title">About Me</h2>
-            <div class="about-content">
-                <div class="about-text">
-                    <h3>Hello, I'm Alex Morgan</h3>
-                    <p>I'm a creative developer and digital artist with over 8 years of experience creating immersive web experiences. My passion lies at the intersection of art and technology, where I blend aesthetic design with cutting-edge web technologies.</p>
-                    <p>My expertise includes WebGL, Three.js, GLSL shaders, particle systems, and procedural generation. I believe in pushing the boundaries of what's possible in the browser to create truly engaging user experiences.</p>
-                    
-                    <div class="skills">
-                        <span class="skill-tag">Three.js</span>
-                        <span class="skill-tag">GLSL Shaders</span>
-                        <span class="skill-tag">WebGL</span>
-                        <span class="skill-tag">Creative Coding</span>
-                        <span class="skill-tag">UI/UX Design</span>
-                        <span class="skill-tag">React</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <section id="contact">
-            <h2 class="section-title">Get In Touch</h2>
-            <div class="contact-form">
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" placeholder="Your name">
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" placeholder="Your email">
-                </div>
-                <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea id="message" placeholder="How can I help you?"></textarea>
-                </div>
-                <button class="btn">Send Message</button>
-            </div>
-        </section>
-        
-        <footer>
-            <div class="social-links">
-                <a href="#" class="social-icon">in</a>
-                <a href="#" class="social-icon">gh</a>
-                <a href="#" class="social-icon">tw</a>
-                <a href="#" class="social-icon">dr</a>
-            </div>
-            <p>© 2025 Creative Developer Portfolio. All rights reserved.</p>
-            <p>Immersive experience created with Three.js and GLSL</p>
-        </footer>
-    </div>
 
-    <script>
-        // Your ocean scene implementation would go here
-        // Using the code you provided as the foundation
-        
-        // Initialize Three.js scene
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        document.getElementById('canvas-container').appendChild(renderer.domElement);
-        
-        // Add your ocean scene here using the fragment shader from your code
-        // For brevity, I'm adding a simple blue sphere as placeholder
-        const geometry = new THREE.SphereGeometry(5, 32, 32);
-        const material = new THREE.MeshBasicMaterial({ color: 0x0077ff });
-        const sphere = new THREE.Mesh(geometry, material);
-        scene.add(sphere);
-        
-        camera.position.z = 10;
-        
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-        
-        // Simple animation loop
-        function animate() {
-            requestAnimationFrame(animate);
-            
-            sphere.rotation.x += 0.005;
-            sphere.rotation.y += 0.007;
-            
-            renderer.render(scene, camera);
-        }
-        
-        animate();
-        
-        // Add scroll effect to parallax elements
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const parallaxElements = document.querySelectorAll('.hero, .section-title');
-            
-            parallaxElements.forEach(element => {
-                element.style.transform = `translateY(${scrolled * 0.2}px)`;
-            });
-        });
-    </script>
+  <!-- Hidden anchors for page switching -->
+  <a id="home"></a>
+  <a id="message"></a>
+
+  <!-- Home Page -->
+  <div class="page home-page">
+    <div>
+      <h1>Hey there! 🐰</h1>
+      <a href="#message" class="cute-button">Click me for a surprise! 💖</a>
+    </div>
+  </div>
+
+  <!-- Message Page -->
+  <div class="page message-page">
+    <div>
+      <h1>You’re pawsome! 🐾</h1>
+      <p>Keep smiling, you're doing amazing! 🌟</p>
+      <a href="#home" class="cute-button">Back to Home 🏠</a>
+    </div>
+  </div>
+
 </body>
 </html>
-
-input this information and improve 
-
-
-SIMRAN DHIMAN
-8968005690 simmidhiman333@gmail.com LinkedIn: Simran Dhiman GitHub: simrandhiman777
-D.O.B.: 5th JULY 2001, Address: Vill Patialan ,Ropar, PUNJAB
-OBJECTIVE
-Looking for a full-time opportunity in AI/ML that allows me to translate my internship experience into impactful
-work while deepening my understanding of modern machine learning techniques.
-EDUCATION
-Post-Graduation: [Master of Science in Information Technology] 2024
-Shaheed Major Harminderpal Singh (Shaurya Chakra) Government
-College Sahibzada Ajit Singh Nagar
-Maintained: 72%
-Graduation: [B.Sc. non-medical] 2022
-Government college, Rupnagar
-Maintained:78%
-SKILLS
-• Programming & Tools: Python, C, C++, MATLAB, NumPy, Pandas, Matplotlib
-• Web Development: HTML, CSS, Bootstrap, JavaScript, MongoDB
-• Productivity Tools: MS Excel, MS Word - Other: Typing in English, basic computer operations
-PROJECT
-• Student Performance Prediction – http://simrandhiman-studentperformancepredictor.hf.space
-•face detection:  https://simrandhiman-facedetection.hf.space/ 
-•object detection – https://simrandhiman-objectdetection.hf.space 
-• heart disease predictor: https://simrandhiman-heartdiseasepredictor.hf.space/ 
-• yoga App – http://simrandhiman-yogaApp.hf.space
-AIML Intern — NIELIT
-Worked on machine learning and data-driven projects, including data preprocessing, model building, and
-visualization using Python and core ML libraries.
-WORK EXPERIENCE:
-Lab Technician Rayat Bahra University (Nov2024 –June2025)
-• Assisted in managing computer labs, troubleshooting hardware/software issues.
-• Supported students and faculty with technical resources.
-CERTIFICATIONS
-• Machine Learning Onramp
-• MATLAB Academy Enhanced skills in machine learning, MATLAB programming, and data analysis,
-providing a strong foundation for AI & Data Science. create an amzing portfolio ...manipulate the words....create frontend and backend
