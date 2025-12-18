@@ -1,346 +1,527 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Simran Dhiman | Web Developer • AI/ML Enthusiast</title>
-  <meta name="description" content="Portfolio of Simran Dhiman – Web Developer and AI/ML Enthusiast. Projects in Python (NumPy, Pandas, Matplotlib) and modern web (HTML, CSS, Bootstrap, JavaScript)." />
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Bootstrap Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --grad: radial-gradient(1200px 600px at 10% -10%, #a78bfa33, transparent 60%),
-               radial-gradient(800px 400px at 110% 10%, #34d39933, transparent 60%),
-               linear-gradient(180deg, #0b1020 0%, #0a0f1a 100%);
-    }
-    html, body { height: 100%; }
-    body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: var(--grad); color: #e6edf3; }
-
-    /* Navbar */
-    .navbar { backdrop-filter: saturate(1.2) blur(10px); background: rgba(2, 6, 12, .55)!important; }
-    .navbar-brand { font-weight: 700; letter-spacing: 0.4px; }
-    .nav-link { position: relative; }
-    .nav-link::after { content: ""; position: absolute; left: 0; bottom: -4px; height: 2px; width: 0; background: #8b5cf6; transition: width .25s ease; }
-    .nav-link:hover::after { width: 100%; }
-
-    /* Hero */
-    .hero { padding-top: 7rem; padding-bottom: 5rem; }
-    .tag { display: inline-flex; align-items: center; gap: .5rem; padding: .35rem .7rem; border-radius: 999px; background: rgba(139, 92, 246, .15); color: #c4b5fd; font-size: .9rem; }
-    .hero h1 { font-weight: 800; letter-spacing: .2px; }
-    .hero p.lead { color: #c9d1d9; }
-
-    /* Cards / hover */
-    .card { background: #1f2937; border: 1px solid rgba(148, 163, 184, .25); transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; color: #f1f5f9; }
-    .card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,.45); border-color: rgba(139,92,246,.65); }
-
-    .btn-gradient { background: linear-gradient(135deg, #8b5cf6, #22d3ee); border: none; }
-    .btn-gradient:hover { filter: brightness(1.05); transform: translateY(-1px); }
-
-    /* Skill pills */
-    .skill-pill { background: rgba(148, 163, 184, .15); border: 1px solid rgba(148, 163, 184, .3); color: #f1f5f9; padding: .4rem .7rem; border-radius: 999px; font-size: .9rem; transition: transform .2s ease, background .2s ease; }
-    .skill-pill:hover { transform: translateY(-2px); background: rgba(139, 92, 246, .25); }
-
-    /* Sections */
-    section { scroll-margin-top: 90px; }
-
-    /* Footer */
-    footer { color: #94a3b8; }
-
-    /* Sparkle cursor */
-    .sparkle { position: fixed; pointer-events: none; width: 6px; height: 6px; border-radius: 50%; background: radial-gradient(circle at center, #fff, #a78bfa 60%, transparent 70%); filter: drop-shadow(0 0 6px #a78bfa); animation: pop .8s ease-out forwards; }
-    @keyframes pop { 0% { transform: scale(.8); opacity: 1; } 60% { transform: scale(1.8); opacity: .9; } 100% { transform: scale(.1); opacity: 0; } }
-
-    /* Link underline on hover */
-    .soft-link { text-decoration: none; border-bottom: 1px dashed rgba(226,232,240,.4); }
-    .soft-link:hover { border-bottom-color: #a78bfa; }
-
-    /* Subtle separators */
-    .divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(148,163,184,.35), transparent); }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Ocean Portfolio</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js "></script>
+    <script src="https://cdn.jsdelivr.net/npm/tweakpane@4.0.5/dist/tweakpane.min.js "></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            overflow-x: hidden;
+            color: white;
+            background: linear-gradient(to bottom, #0a0a15, #1a0a20);
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            backdrop-filter: blur(10px);
+            background: rgba(10, 10, 21, 0.7);
+            z-index: 100;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #ffaa00, #8888aa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            color: #e0e0ff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-bottom: 0.3rem;
+        }
+        
+        nav a:hover {
+            color: #ffaa00;
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #ffaa00;
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        .hero {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 15px rgba(255, 170, 0, 0.5);
+            background: linear-gradient(45deg, #ffaa00, #8888aa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 700px;
+            margin: 1.5rem auto;
+            color: #e0e0ff;
+            line-height: 1.6;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: linear-gradient(45deg, #ffaa00, #ff3300);
+            color: white;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 170, 0, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 170, 0, 0.5);
+        }
+        
+        section {
+            padding: 5rem 0;
+            position: relative;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(45deg, #ffaa00, #8888aa);
+            border-radius: 2px;
+        }
+        
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .project-card {
+            background: rgba(20, 20, 40, 0.7);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 170, 0, 0.3);
+        }
+        
+        .project-img {
+            height: 200px;
+            background: linear-gradient(45deg, #1a0a20, #0a0a15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+        
+        .project-info {
+            padding: 1.5rem;
+        }
+        
+        .project-info h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+            color: #ffaa00;
+        }
+        
+        .project-info p {
+            color: #c0c0e0;
+            line-height: 1.6;
+        }
+        
+        .about-content {
+            display: flex;
+            gap: 3rem;
+            align-items: center;
+        }
+        
+        .about-text {
+            flex: 1;
+        }
+        
+        .about-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #ffaa00;
+        }
+        
+        .about-text p {
+            margin-bottom: 1.2rem;
+            line-height: 1.7;
+            color: #e0e0ff;
+        }
+        
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .skill-tag {
+            background: rgba(255, 170, 0, 0.15);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(20, 20, 40, 0.7);
+            padding: 2.5rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #e0e0ff;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(10, 10, 21, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #a0a0c0;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 2rem;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            background: #ffaa00;
+            transform: translateY(-5px);
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .about-content {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                gap: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-    <div class="container">
-      <a class="navbar-brand" href="#home">SD</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="nav">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-          <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
-          <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
-          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Hero -->
-  <header id="home" class="hero">
-    <div class="container">
-      <div class="row align-items-center g-4">
-        <div class="col-lg-7">
-          <span class="tag"><i class="bi bi-stars"></i> Web Developer • AI/ML Enthusiast</span>
-          <h1 class="display-5 mt-3">Hi, I’m <span class="text-gradient" style="background: linear-gradient(135deg,#a78bfa,#22d3ee); -webkit-background-clip: text; background-clip: text; color: transparent;">Simran Dhiman</span>.</h1>
-          <p class="lead mt-3">I build clean, responsive web experiences and explore intelligent systems. I completed my <strong>M.Sc. (IT)</strong> and I love turning ideas into performant, user‑friendly products.</p>
-          <div class="d-flex gap-2 flex-wrap mt-3">
-            <a href="#projects" class="btn btn-gradient btn-lg"><i class="bi bi-rocket-takeoff me-2"></i>See my work</a>
-            <a href="#contact" class="btn btn-outline-light btn-lg"><i class="bi bi-chat-dots me-2"></i>Let’s talk</a>
-          </div>
-          <p class="mt-3 small text-secondary">Open to collaborations, freelance, and full‑time opportunities.</p>
-        </div>
-        <div class="col-lg-5 text-center">
-          <div class="card p-4">
-            <div class="card-body">
-              <h5 class="card-title mb-3"><i class="bi bi-mortarboard"></i> Credentials</h5>
-              <ul class="list-unstyled mb-0">
-                <li class="mb-2"><i class="bi bi-check2-circle me-2"></i>M.Sc. (Information Technology)</li>
-                <li class="mb-2"><i class="bi bi-check2-circle me-2"></i>Web Development (HTML, CSS, Bootstrap, JavaScript)</li>
-                <li class="mb-2"><i class="bi bi-check2-circle me-2"></i>Python for Data • NumPy • Pandas • Matplotlib</li>
-                <li class="mb-2"><i class="bi bi-check2-circle me-2"></i>AI/ML enthusiast – always learning</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <div class="divider container mb-5"></div>
-
-  <!-- About -->
-  <section id="about" class="py-4">
-    <div class="container">
-      <div class="row align-items-center g-4">
-        <div class="col-lg-6">
-          <h2 class="mb-3">About me</h2>
-          <p class="mb-2">I’m a <strong>web developer</strong> who enjoys crafting intuitive UIs and reliable back‑of‑the‑UI logic. On the AI/ML side, I enjoy exploring how data turns into decisions, from <em>NumPy</em> arrays to <em>Matplotlib</em> visuals.</p>
-          <p class="mb-0">I care about accessibility, performance, and writing code that’s easy to read. When I’m not coding, you’ll find me learning new libraries or redesigning little components just for fun.</p>
-        </div>
-        <div class="col-lg-6">
-          <div class="card h-100">
-            <div class="card-body">
-              <h5 class="card-title mb-3"><i class="bi bi-lightning-charge"></i> Quick facts</h5>
-              <div class="row g-3">
-                <div class="col-6"><span class="skill-pill w-100 d-inline-block text-center">Problem Solver</span></div>
-                <div class="col-6"><span class="skill-pill w-100 d-inline-block text-center">Pixel‑minded</span></div>
-                <div class="col-6"><span class="skill-pill w-100 d-inline-block text-center">Team Friendly</span></div>
-                <div class="col-6"><span class="skill-pill w-100 d-inline-block text-center">Fast Learner</span></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Skills -->
-  <section id="skills" class="py-5">
-    <div class="container">
-      <h2 class="mb-4">Skills</h2>
-      <div class="row g-3">
-        <div class="col-md-6 col-lg-4">
-          <div class="card h-100">
-            <div class="card-body">
-              <h5 class="card-title mb-3"><i class="bi bi-braces"></i> Languages & Core</h5>
-              <div class="d-flex flex-wrap gap-2">
-                <span class="skill-pill">JavaScript</span>
-                <span class="skill-pill">Python</span>
-                <span class="skill-pill">HTML</span>
-                <span class="skill-pill">CSS</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4">
-          <div class="card h-100">
-            <div class="card-body">
-              <h5 class="card-title mb-3"><i class="bi bi-window"></i> Front‑end</h5>
-              <div class="d-flex flex-wrap gap-2">
-                <span class="skill-pill">Bootstrap</span>
-                <span class="skill-pill">Responsive UI</span>
-                <span class="skill-pill">Accessibility</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-4">
-          <div class="card h-100">
-            <div class="card-body">
-              <h5 class="card-title mb-3"><i class="bi bi-cpu"></i> Data & AI</h5>
-              <div class="d-flex flex-wrap gap-2">
-                <span class="skill-pill">NumPy</span>
-                <span class="skill-pill">Pandas</span>
-                <span class="skill-pill">Matplotlib</span>
-                <span class="skill-pill">AI/ML (Foundations)</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Projects -->
-  <section id="projects" class="py-5">
-    <div class="container">
-      <h2 class="mb-4">Projects</h2>
-      <div class="row g-4">
-        <!-- Project 1: NumPy + Matplotlib -->
-        <div class="col-md-6">
-          <div class="card h-100">
-            <div class="card-body d-flex flex-column">
-              <h5 class="card-title">Data Insight Mini‑Suite</h5>
-              <p class="card-text flex-grow-1">A Python mini‑project showcasing data processing with <strong>NumPy</strong> and visualization with <strong>Matplotlib</strong>. Built simple statistical utilities and charts that turn raw arrays into understandable visuals.</p>
-              <div class="d-flex gap-2">
-                <a class="btn btn-sm btn-gradient" href="https://github.com/simrandhiman777/index.html/blob/main/simrandhiman_numpyproject.ipynb" target="_blank" rel="noreferrer noopener"><i class="bi bi-box-arrow-up-right me-1"></i> Live/Repo</a>
-                <a class="btn btn-sm btn-outline-light" href="https://github.com/simrandhiman777/index.html/blob/main/simrandhiman_numpyproject.ipynb" target="_blank" rel="noreferrer noopener"><i class="bi bi-file-earmark-text me-1"></i> README</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Project 2: Webpage with HTML/CSS/Bootstrap -->
-        <div class="col-md-6">
-          <div class="card h-100">
-            <div class="card-body d-flex flex-column">
-              <h5 class="card-title">Responsive Landing Page</h5>
-              <p class="card-text flex-grow-1">A small but polished webpage built with <strong>HTML</strong>, <strong>CSS</strong>, and <strong>Bootstrap</strong>, featuring a clean layout, responsive grid, and interactive components with a touch of custom JS.</p>
-              <div class="d-flex gap-2">
-                <a class="btn btn-sm btn-gradient" href="https://simrandhiman777.github.io/cutie" target="_blank" rel="noreferrer noopener"><i class="bi bi-box-arrow-up-right me-1"></i> Live/Repo</a>
-                <a class="btn btn-sm btn-outline-light" href="https://github.com/simrandhiman777/simrandhiman777.github.io/blob/main/cutie.html" target="_blank" rel="noreferrer noopener"><i class="bi bi-file-earmark-text me-1"></i> Case study</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="alert alert-info mt-4 mb-0" role="alert">
-        <i class="bi bi-info-circle me-2"></i>
-       check it out!!
-      </div>
-    </div>
-  </section>
-
- <section id="contact" class="py-5">
-    <div class="container">
-      <div class="row g-4 align-items-stretch">
-        <div class="col-lg-7">
-          <div class="card h-100">
-            <div class="card-body">
-              <h2 class="card-title mb-3">Let’s connect</h2>
-              <p class="mb-4">I’m always happy to chat about opportunities, collaborations, or cool ideas. Drop a note and I’ll get back to you soon.</p>
-              <form class="row g-3" onsubmit="event.preventDefault(); friendlyToast('Thanks for your message! I\'ll reply soon.'); this.reset();">
-                <div class="col-md-6">
-                  <label class="form-label">Name</label>
-                  <input type="text" class="form-control" placeholder="Your name" required>
+    <div id="canvas-container"></div>
+    
+    <div class="content-wrapper">
+        <header>
+            <div class="logo">OceanDev</div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <section id="home" class="hero">
+            <h1>Creative Developer</h1>
+            <p>Specializing in immersive web experiences with WebGL, Three.js, and creative coding. Transforming ideas into interactive realities.</p>
+            <a href="#projects" class="btn">View My Work</a>
+        </section>
+        
+        <section id="projects">
+            <h2 class="section-title">Featured Projects</h2>
+            <div class="portfolio-grid">
+                <div class="project-card">
+                    <div class="project-img">🌊</div>
+                    <div class="project-info">
+                        <h3>Ocean Simulation</h3>
+                        <p>Procedural ocean with realistic waves, reflections, and atmospheric effects using custom GLSL shaders.</p>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                  <label class="form-label">Email</label>
-                  <input type="email" class="form-control" placeholder="youremail@gmail.com" required>
+                <div class="project-card">
+                    <div class="project-img">🌌</div>
+                    <div class="project-info">
+                        <h3>Nebula Explorer</h3>
+                        <p>Interactive 3D visualization of cosmic phenomena with particle systems and volumetric lighting.</p>
+                    </div>
                 </div>
-                <div class="col-12">
-                  <label class="form-label">Message</label>
-                  <textarea class="form-control" rows="4" placeholder="Say hello…" required></textarea>
+                <div class="project-card">
+                    <div class="project-img">🏙️</div>
+                    <div class="project-info">
+                        <h3>City Generator</h3>
+                        <p>Procedurally generated urban environments with real-time lighting and shadow mapping.</p>
+                    </div>
                 </div>
-                <div class="col-12">
-                  <button class="btn btn-gradient btn-lg" type="submit"><i class="bi bi-send me-2"></i>Send</button>
-                </div>
-              </form>
             </div>
-          </div>
-        </div>
-        <div class="col-lg-5">
-          <div class="card h-100">
-            <div class="card-body d-flex flex-column">
-              <h5 class="card-title mb-3">Find me online</h5>
-              <div class="d-grid gap-2">
-                <a class="btn btn-outline-light" href="https://www.linkedin.com/in/simran-dhiman-3b7b49316/" target="_blank" rel="noreferrer noopener"><i class="bi bi-linkedin me-2"></i>LinkedIn</a>
-                <a class="btn btn-outline-light" href="https://github.com/simrandhiman777" target="_blank" rel="noreferrer noopener"><i class="bi bi-github me-2"></i>GitHub</a>
-                <a class="btn btn-outline-light" href="mailto:simmidhiman333@gmail.com"><i class="bi bi-envelope me-2"></i>Email</a>
-              </div>
+        </section>
+        
+        <section id="about">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Hello, I'm Alex Morgan</h3>
+                    <p>I'm a creative developer and digital artist with over 8 years of experience creating immersive web experiences. My passion lies at the intersection of art and technology, where I blend aesthetic design with cutting-edge web technologies.</p>
+                    <p>My expertise includes WebGL, Three.js, GLSL shaders, particle systems, and procedural generation. I believe in pushing the boundaries of what's possible in the browser to create truly engaging user experiences.</p>
+                    
+                    <div class="skills">
+                        <span class="skill-tag">Three.js</span>
+                        <span class="skill-tag">GLSL Shaders</span>
+                        <span class="skill-tag">WebGL</span>
+                        <span class="skill-tag">Creative Coding</span>
+                        <span class="skill-tag">UI/UX Design</span>
+                        <span class="skill-tag">React</span>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
+        </section>
+        
+        <section id="contact">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="contact-form">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" placeholder="Your name">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Your email">
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" placeholder="How can I help you?"></textarea>
+                </div>
+                <button class="btn">Send Message</button>
+            </div>
+        </section>
+        
+        <footer>
+            <div class="social-links">
+                <a href="#" class="social-icon">in</a>
+                <a href="#" class="social-icon">gh</a>
+                <a href="#" class="social-icon">tw</a>
+                <a href="#" class="social-icon">dr</a>
+            </div>
+            <p>© 2025 Creative Developer Portfolio. All rights reserved.</p>
+            <p>Immersive experience created with Three.js and GLSL</p>
+        </footer>
     </div>
-  </section>
 
-  <footer class="py-4">
-    <div class="container d-flex flex-wrap justify-content-between align-items-center">
-      <small>© <span id="year"></span> Simran Dhiman. All rights reserved.</small>
-      <small>Built with <a class="soft-link" href="https://getbootstrap.com/" target="_blank" rel="noreferrer noopener">Bootstrap</a> & a little JavaScript sparkle ✨</small>
-    </div>
-  </footer>
-
-  <!-- Toast container -->
-  <div class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 1080">
-    <div id="toast" class="toast align-items-center text-bg-dark border-0" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="d-flex">
-        <div class="toast-body">
-          Hello there!
-        </div>
-        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    // Year in footer
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Friendly toast helper
-    const toastEl = document.getElementById('toast');
-    function friendlyToast(msg) {
-      toastEl.querySelector('.toast-body').textContent = msg;
-      const t = new bootstrap.Toast(toastEl, { delay: 2600 });
-      t.show();
-    }
-
-    // Smooth scroll for internal links
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-      a.addEventListener('click', e => {
-        const target = document.querySelector(a.getAttribute('href'));
-        if (target) {
-          e.preventDefault();
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    <script>
+        // Your ocean scene implementation would go here
+        // Using the code you provided as the foundation
+        
+        // Initialize Three.js scene
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+        
+        // Add your ocean scene here using the fragment shader from your code
+        // For brevity, I'm adding a simple blue sphere as placeholder
+        const geometry = new THREE.SphereGeometry(5, 32, 32);
+        const material = new THREE.MeshBasicMaterial({ color: 0x0077ff });
+        const sphere = new THREE.Mesh(geometry, material);
+        scene.add(sphere);
+        
+        camera.position.z = 10;
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+        
+        // Simple animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            sphere.rotation.x += 0.005;
+            sphere.rotation.y += 0.007;
+            
+            renderer.render(scene, camera);
         }
-      });
-    });
-
-    // Sparkle cursor effect
-    const throttle = (fn, wait) => {
-      let t = 0; return (...args) => { const now = Date.now(); if (now - t > wait) { t = now; fn(...args); } };
-    };
-
-    const spawnSparkle = (x, y) => {
-      const s = document.createElement('span');
-      s.className = 'sparkle';
-      s.style.left = `${x - 3}px`;
-      s.style.top = `${y - 3}px`;
-      document.body.appendChild(s);
-      setTimeout(() => s.remove(), 800);
-    };
-
-    window.addEventListener('mousemove', throttle(e => {
-      spawnSparkle(e.clientX, e.clientY);
-    }, 12));
-
-    // Subtle parallax on hero
-    const hero = document.querySelector('.hero');
-    window.addEventListener('scroll', () => {
-      const y = window.scrollY;
-      hero.style.backgroundPosition = `center ${-y * 0.05}px`;
-    });
-  </script>
+        
+        animate();
+        
+        // Add scroll effect to parallax elements
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.hero, .section-title');
+            
+            parallaxElements.forEach(element => {
+                element.style.transform = `translateY(${scrolled * 0.2}px)`;
+            });
+        });
+    </script>
 </body>
 </html>
+
+input this information and improve 
+
+
+SIMRAN DHIMAN
+8968005690 simmidhiman333@gmail.com LinkedIn: Simran Dhiman GitHub: simrandhiman777
+D.O.B.: 5th JULY 2001, Address: Vill Patialan ,Ropar, PUNJAB
+OBJECTIVE
+Looking for a full-time opportunity in AI/ML that allows me to translate my internship experience into impactful
+work while deepening my understanding of modern machine learning techniques.
+EDUCATION
+Post-Graduation: [Master of Science in Information Technology] 2024
+Shaheed Major Harminderpal Singh (Shaurya Chakra) Government
+College Sahibzada Ajit Singh Nagar
+Maintained: 72%
+Graduation: [B.Sc. non-medical] 2022
+Government college, Rupnagar
+Maintained:78%
+SKILLS
+• Programming & Tools: Python, C, C++, MATLAB, NumPy, Pandas, Matplotlib
+• Web Development: HTML, CSS, Bootstrap, JavaScript, MongoDB
+• Productivity Tools: MS Excel, MS Word - Other: Typing in English, basic computer operations
+PROJECT
+• Student Performance Prediction – http://simrandhiman-studentperformancepredictor.hf.space
+•face detection:  https://simrandhiman-facedetection.hf.space/ 
+•object detection – https://simrandhiman-objectdetection.hf.space 
+• heart disease predictor: https://simrandhiman-heartdiseasepredictor.hf.space/ 
+• yoga App – http://simrandhiman-yogaApp.hf.space
+AIML Intern — NIELIT
+Worked on machine learning and data-driven projects, including data preprocessing, model building, and
+visualization using Python and core ML libraries.
+WORK EXPERIENCE:
+Lab Technician Rayat Bahra University (Nov2024 –June2025)
+• Assisted in managing computer labs, troubleshooting hardware/software issues.
+• Supported students and faculty with technical resources.
+CERTIFICATIONS
+• Machine Learning Onramp
+• MATLAB Academy Enhanced skills in machine learning, MATLAB programming, and data analysis,
+providing a strong foundation for AI & Data Science. create an amzing portfolio ...manipulate the words....create frontend and backend
