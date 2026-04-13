@@ -87,6 +87,38 @@
 .card .small {
   color: #cbd5f5 !important;
 }
+/* Dark form inputs */
+.form-control {
+  background-color: rgba(15, 23, 42, 0.8);
+  color: #e6edf3;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.form-control::placeholder {
+  color: #94a3b8;
+}
+
+.form-control:focus {
+  background-color: rgba(15, 23, 42, 0.95);
+  color: #ffffff;
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 0.15rem rgba(139, 92, 246, 0.3);
+}
+
+/* Labels visibility */
+.form-label {
+  color: #cbd5f5;
+}
+/* Button hover improvement */
+.btn-gradient {
+  color: white;
+  font-weight: 500;
+}
+
+/* Form card spacing */
+#contact .card {
+  backdrop-filter: blur(10px);
+}
 
 
   </style>
@@ -292,23 +324,33 @@
             <div class="card-body">
               <h2 class="card-title mb-3">Let’s connect</h2>
               <p class="mb-4">I’m always happy to chat about opportunities, collaborations, or cool ideas. Drop a note and I’ll get back to you soon.</p>
-              <form class="row g-3" onsubmit="event.preventDefault(); friendlyToast('Thanks for your message! I\'ll reply soon.'); this.reset();">
-                <div class="col-md-6">
-                  <label class="form-label">Name</label>
-                  <input type="text" class="form-control" placeholder="Your name" required>
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label">Email</label>
-                  <input type="email" class="form-control" placeholder="you@example.com" required>
-                </div>
-                <div class="col-12">
-                  <label class="form-label">Message</label>
-                  <textarea class="form-control" rows="4" placeholder="Say hello…" required></textarea>
-                </div>
-                <div class="col-12">
-                  <button class="btn btn-gradient btn-lg" type="submit"><i class="bi bi-send me-2"></i>Send</button>
-                </div>
-              </form>
+<form action="https://formsubmit.co/simmidhiman333@gmail.com" method="POST" class="row g-3">
+
+  <!-- Hidden settings -->
+  <input type="hidden" name="_subject" value="New Message from Portfolio">
+  <input type="hidden" name="_captcha" value="false">
+
+  <div class="col-md-6">
+    <label class="form-label">Name</label>
+    <input type="text" name="name" class="form-control" placeholder="Your name" required>
+  </div>
+
+  <div class="col-md-6">
+    <label class="form-label">Email</label>
+    <input type="email" name="email" class="form-control" placeholder="you@example.com" required>
+  </div>
+
+  <div class="col-12">
+    <label class="form-label">Message</label>
+    <textarea name="message" class="form-control" rows="4" placeholder="Say hello…" required></textarea>
+  </div>
+
+  <div class="col-12">
+    <button class="btn btn-gradient btn-lg" type="submit">
+      <i class="bi bi-send me-2"></i>Send
+    </button>
+  </div>
+
             </div>
           </div>
         </div>
